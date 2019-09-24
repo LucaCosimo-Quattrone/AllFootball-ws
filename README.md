@@ -3,7 +3,6 @@ Questa repository contiene il client del progetto di piattaforme digitali e gest
 L'applicazione è stata sviluppata e testata attraverso la piattaforma software WAMPServer, che mette a disposizione dell'utente un web server locale, un server DataBase MySQL e linguaggi di scripting (In questo caso PHP). La scelta di utilizzare WAMPServer è fortemente vincolata dalla necessità di avere un DataBase per la validazione degli utenti. <br><br>
 Lo scopo del client è quello di simulare un sito web contenente le ultime informazioni sul calcio. Per la realizzazione sono state usate le seguenti tecnologie:
 
-
   - [PHP](https://www.php.net/): Utilizzato per realizzare gli script necessari a comunicare col ws.
 
   - [HTML](https://it.wikipedia.org/wiki/HTML): Utilizzato per l'impaginazione e la formattazione del sito web.
@@ -66,8 +65,8 @@ function getInfoByWs( $id, $request, $id2, $id3)
     ...
   }
   ```
-  Ecco quindi cosa si ottiene una volta entrati:
-  ![home.php](/images/home.png)
+  Ecco quindi cosa si ottiene una volta entrati:<br>
+  ![home.php](/image/home.png)
 
 
   Per il login invece si effettua un check della password e dell'username col db, ottenendo ovviamente i dati in POST.
@@ -98,7 +97,8 @@ function getInfoByWs( $id, $request, $id2, $id3)
   $team = $_GET['formSquad'];
   $data = getInfoByWs($team, "player", "", "");
   ```
-  ![player.php](/images/player.png)
+  <br>
+  ![player.php](/image/player.png)
 
   In caso una informazione non sia riportata, nela tabella comparirà il simbolo '//'
   ```php
@@ -119,11 +119,10 @@ function getInfoByWs( $id, $request, $id2, $id3)
   Oltre alle varie informazioni sul match sarà presente un pulsante per visualizzare le formazioni iniziali delle due squadre, in caso la partita non sia stata mai disputata però, il pulsante non sarà presente
 
   <br>
-  Ecco un esempio della pagina match:
-  ![match.php](/images/match.png)
+  Ecco un esempio della pagina match:<br>
+  ![match.php](/image/match.png)
 
 ### lineup.php
 
-  In questa pagina viene visualizzata la formazione delle due squadre di una partita.
-  Accessibile tramite il relativo pulsante nella pagina match.php sfrutta l'impaginazione html concatenata con i tag di bootstrap per migliorare la visibilità del risultato.
-  ![lineup.php](/images/lineup.png)
+  In questa pagina viene visualizzata la formazione delle due squadre di una partita. Accessibile tramite il relativo pulsante nella pagina match.php sfrutta l'impaginazione html concatenata con i tag di bootstrap per migliorare la visibilità del risultato. In caso non sia disponibile un dato, il valore NULL verrà sostituito da '<b>//</b>'.<br>
+  ![lineup.php](/image/lineup.png)
