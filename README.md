@@ -97,7 +97,6 @@ function getInfoByWs( $id, $request, $id2, $id3)
   $team = $_GET['formSquad'];
   $data = getInfoByWs($team, "player", "", "");
   ```
-  <br>
   ![player.php](/image/player.png)
 
   In caso una informazione non sia riportata, nela tabella comparirà il simbolo '//'
@@ -119,10 +118,10 @@ function getInfoByWs( $id, $request, $id2, $id3)
   Oltre alle varie informazioni sul match sarà presente un pulsante per visualizzare le formazioni iniziali delle due squadre, in caso la partita non sia stata mai disputata però, il pulsante non sarà presente
 
   <br>
-  Ecco un esempio della pagina match:<br>
+  Ecco un esempio della pagina match:<br><br>
   ![match.php](/image/match.png)
 
 ### lineup.php
 
-  In questa pagina viene visualizzata la formazione delle due squadre di una partita. Accessibile tramite il relativo pulsante nella pagina match.php sfrutta l'impaginazione html concatenata con i tag di bootstrap per migliorare la visibilità del risultato. In caso non sia disponibile un dato, il valore NULL verrà sostituito da '<b>//</b>'.<br>
+  In questa pagina viene visualizzata la formazione delle due squadre di una partita. Accessibile tramite il relativo pulsante nella pagina match.php sfrutta l'impaginazione html concatenata con i tag di bootstrap per migliorare la visibilità del risultato. In caso non sia disponibile un dato, il valore NULL verrà sostituito da '<b>//</b>'.<br><br>
   ![lineup.php](/image/lineup.png)
