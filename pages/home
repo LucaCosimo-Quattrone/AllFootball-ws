@@ -1,0 +1,64 @@
+<body class="bg-secondary">
+
+  <!-- Page Content -->
+  <div class="container">
+    <header class="jumbotron my-4 bg-dark">
+      <h1 class="display-3 text-success">Benvenuti su AllFootball!</h1>
+      <p class="lead text-success">Sottoscrivi subito il tuo abbonamento per il migliore sito di streaming sportivo al mondo!</p>
+      <a href="index.php?page=login&action=registrati" class="btn btn-success btn-lg">Abbonati ora!</a>
+    </header>
+    <br><br>
+
+
+    <?php
+    if(isset($_SESSION['username']))
+    {
+    ?>
+    <div class="jumbotron my-4 bg-dark">
+      <h2 class="display-4 text-success">Visualizza tutti i giocatori di una squadra:</h2><br><br>
+      <label class="my-1 mr-2 text-success" for="formSquad">Scegli la squadra:</label>
+      <form class="form-inline" method="get" action="index.php">
+        <select class="custom-select my-1 mr-sm-2" name="formSquad">
+          <option selected>Scegli...</option>
+          <?php
+          $data = getInfoByWs($lega, "squad", "", "");
+
+          if($data["status"] >= 200
+             && $data["status"] < 300)
+          {
+
+            $data = $data["data"];
+            for ($i = 0;
+                 $i < count($data);
+                 $i++)
+            {
+              if(!empty($data[$i]['team_id']))
+                echo "<option value=". $data[$i]['team_id'] .">". $data[$i]['name'] ."</option>";
+            }
+
+          }
+          ?>
+        </select>
+        <hr>
+        <br><br>
+        <div class="align-bottom">
+          <button class="btn btn-success my-3 my-sm-1" type="submit">Cerca</button>
+        </div>
+
+      </form>
+    </div>
+    <?php
+    }
+    ?>
+
+  </div>
+
+
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
