@@ -1,54 +1,88 @@
 <?php
-header("Content-Type:application/json");
-function getUrlContent($url)
-{
-    $curl = curl_init($url);
-    curl_setopt_array($curl, array( CURLOPT_RETURNTRANSFER => true,
-  	                                CURLOPT_ENCODING => "",
-  	                                CURLOPT_MAXREDIRS => 10,
-                                    CURLOPT_TIMEOUT => 30,
-                                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                                    CURLOPT_CUSTOMREQUEST => "GET",
-                                    CURLOPT_HTTPHEADER => array("x-rapidapi-host:api-football-v1.p.rapidapi.com",
-	                                                              "x-rapidapi-key:e237d77783msh1277417c4197892p118192jsnf7d06f8c7652"),
-                                    ));
-  $response = curl_exec($curl);
-  $err = curl_error($curl);
-  curl_close($curl);
+include("script/connection.php");
+session_start();
 
-  return $response;
-}
-function response($status, $status_message, $data)
+function getInfoByWs($id, $request, $id2, $id3)
 {
-	header("HTTP/1.1 $status $status_message");
-	$response['status'] = $status;
-	$response['status_message'] = $status_message;
-	$response['data'] = $data;
-	$json_response = json_encode($response);
-
-	echo $json_response;
-}
-   /*
-  Selezione url
-  */
-  if(isset($_GET['request']))
+  if($request == "general" || $request == "squad")
+    $url = "https://piattaformedigitali-ws.herokuapp.com/index.php?request=". $request ."&league-id=". $id;
+  else if($request == "player")
+    $url = "https://piattaformedigitali-ws.herokuapp.com/index.php?request=player&team_id=". $id;
+  else if($request == "lineup")
   {
-    $league_id = $_GET['league-id'];
-    $url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/".$league_id;
-    $data = getUrlContent($url);
-    $data = json_decode($data,true);
+    $homeTeam = urlencode($id2);
+    $awayTeam = urlencode($id3);
+    $url = "https://piattaformedigitali-ws.herokuapp.com/index.php?request=lineup&fix_id=". $id ."&home-team=". $homeTeam ."&away-team=". $awayTeam;
+  }
+  else
+    $url = "https://piattaformedigitali-ws.herokuapp.com/index.php?request=roundfix&league-id=". $id ."&round=". $id2;
 
-    if (count($data) == 0)
-    {
-      response(204,"Assente",NULL);
-    }
-    else
-    {
-      response(200,"Presente",$data);
-    }
-    else
-    {
-      response(400,"Rischiesta non valida",NULL);
-    }
+  $pagina = file_get_contents($url);
+  $data = json_decode($pagina, true);
+  return $data;
+}
+
+/*
+Lega di default
+*/
+$lega = 524;
+
+/*
+Setto la pagina di default
+*/
+$pagina_di_default = 'home';
+
+/*
+Setto la pagina 404 (not found)
+*/
+$pagina_404 = 'pages/404.php';
+
+/*
+Verifico il valore indicato dall'utente
+*/
+$pagina_richiesta = isset($_GET['page']) ? basename((string) $_GET['page']) : $pagina_di_default;
+
+/*
+Compongo il percorso da raggiungere
+*/
+$file_da_includere = "pages/" . $pagina_richiesta . ".php";
+
+if(file_exists($file_da_includere) && !isset($_GET['formSquad']) && !isset($_GET['fixId']) && !isset($_GET['daily_n'])){
+    include("template/head.php");
+    include("template/header.php");
+    include( $file_da_includere );
+    include("template/footer.php");
+}
+else if (file_exists($file_da_includere) && isset($_GET['formSquad']))
+{
+    $search_team_id = $_GET['formSquad'];
+    include("template/head.php");
+    include("template/header.php");
+    include("pages/players.php");
+    include("template/footer.php");
+}
+else if (file_exists($file_da_includere) && isset($_GET['fixId']))
+{
+  $search_fix_id = $_GET['fixId'];
+  include("template/head.php");
+  include("template/header.php");
+  include("pages/lineup.php");
+  include("template/footer.php");
+}
+else if (file_exists($file_da_includere) && isset($_GET['daily_n']))
+{
+  $search_daily_id = $_GET['daily_n'];
+  include("template/head.php");
+  include("template/header.php");
+  include("pages/match.php");
+  include("template/footer.php");
+}
+else
+{
+	  include("template/head.php");
+    include("template/header.php");
+    include( $pagina_404 );
+    include("template/footer.php");
+}
 
 ?>
